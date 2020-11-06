@@ -3,14 +3,28 @@ library(tidyverse)
 
 library(shiny)
 library(fec16)
-
+library(readxl)
+library(shinythemes)
 # This is just a normal object
 
 state.names <- c("CA", "NY", "KS")
 
+
 # Make change to your dataset
 results_house <- results_house %>%
   select(-footnotes)
+
+ticket_price <- read_xlsx("Final Project data/statistic_id193595_average-ticket-price-in-the-nfl-by-team-2019.xlsx", sheet = "Data", skip = 3)
+
+
+
+
+
+nfl_ticket <- ticket_price %>% 
+  slice(2:34) 
+
+colnames(nfl_ticket) <- c("NFL_team", "Average_ticket_price")
+  
 
 ######################################################################################
 ######################################################################################
@@ -32,6 +46,7 @@ results_house <- results_house %>%
 
 ui <- fluidPage(navbarPage(
   "Shiny Example",
+  theme = shinytheme("cosmo"),
   
   tabPanel(
     "Main",
@@ -43,21 +58,13 @@ ui <- fluidPage(navbarPage(
     # Here is a sidebar!
     
     sidebarPanel(
-      selectInput(
-        inputId = "selected_state",                 # a name for the value you choose here
-        label = "Choose a state from this list!",   # the name to display on the slider
-        choices = state.names                       # your list of choices to choose from
+     h3("Welcome to my final project"),
+     p("This project takes data from the 2019 NFL Season and shows the 
+       average ticket prices for each NFL team."),
+     tags$img(src = "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/1024px-National_Football_League_logo.svg.png", 
+              height = 200, width = 200) 
+   
       ),
-      
-      sliderInput(
-        inputId = "selected_size",                  # a name for the value you choose here
-        label = "Choose a number as a point size:", # the label to display above the slider
-        min = 0,                                    # the min, max, and initial values
-        max = 5,
-        value = 2 
-      )
-      
-    ),
     
     
     # And here is your "main panel" for the page.
@@ -95,18 +102,24 @@ ui <- fluidPage(navbarPage(
       textInput(
         inputId = "entered_text",               # a name for the value you choose here
         label = "Place your title text here:",  # a label above the text box
-        value = "Example Title"                 # an initial value for the box
+        value = "Average Price of NFL 2019 tickets"                 # an initial value for the box
       ),
       
-      textOutput("state_message"),              # load a text object called "state_message"
-      textOutput("size_message"),
-      textOutput("color_message"),
-      textOutput("text_message"),
+    
       plotOutput("state_plot")
     )
   ),
   tabPanel("About",
-             h3("This is an about me! My name is _______"))
+             h3("Hi!"),
+             p("My name is Hollyn and I am a rising sophomore in Winthrop house. 
+             I play on the Varsity Women's Soccer team at Harvard, which has inspired 
+             my love and interest for all sports. Growing up in Texas, I always enjoyed watching 
+             football with my family and friends. My project shows the average ticket price 
+             in 2019 to be admitted to a specific teams NFL game. It is super interesting to 
+             see the team in relation to price and the location of the team in relation as well.
+             I hope you enjoy the data and learn something new about the NFL!
+            "))
+  
   )
 )
 
@@ -117,49 +130,29 @@ server <- function(input, output, session) {
   #
   #   -- so here, renderText() is updating live text based on your choice.
   
-  output$state_message <- renderText({
-    paste0("This is the state you chose: ", # this is just a string, so it will never change
-           input$selected_state, "!")       # this is based on your input, selected_state defined above.
-  })
   
-  output$size_message <- renderText({
-    paste0("This is the size you chose: ", # this is just a string, so it will never change
-           input$selected_size, "!")       # this is based on your input, selected_state defined above.
-  })
   
-  output$color_message <- renderText({
-    paste0("This is the color you chose: ", # this is just a string, so it will never change
-           input$selected_color, "!")       # this is based on your input, selected_state defined above.
-  })
-  
-  output$text_message <- renderText({
-    paste0("This is the label you typed: ", # this is just a string, so it will never change
-           input$entered_text, "!")       # this is based on your input, selected_state defined above.
-  })
-  
-  # This line makes our dataset reactive.
-  # That is, we can update it based on the values of input that define above.
-  
-  results <- reactive({
-    results_house
-  })
   
   # Just like renderText(), we can renderPlot()!
   
   output$state_plot <- renderPlot({
     # we need to use () here after the name of our dataset because it is reactive!
-    results() %>%
+    nfl_ticket %>%
       
       # notice we are using the selected_state variable defined above!
       
-      filter(state == input$selected_state) %>%
+      
       
       # this plot is just like normal!
-      ggplot(aes(x = primary_percent, y = general_percent)) +
-      geom_point(size = input$selected_size,
-                 color = input$selected_color) +
+      ggplot(aes(x = NFL_team, y = Average_ticket_price)) +
+      geom_col(
+        fill = input$selected_color) +
       labs(title = input$entered_text) +
-      theme_bw()
+      theme_bw() +
+      coord_flip() +
+      labs(x = "Ticket price(dollars", y = "NFL Team")
+    
+  
   })
   
 }

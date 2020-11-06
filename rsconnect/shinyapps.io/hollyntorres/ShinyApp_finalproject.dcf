@@ -1,0 +1,12 @@
+name: ShinyApp_finalproject
+title: ShinyApp_finalproject
+username:
+account: hollyntorres
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3023038
+bundleId: 3826337
+url: https://hollyntorres.shinyapps.io/ShinyApp_finalproject/
+when: 1604636643.08011
+asMultiple: FALSE
+asStatic: FALSE
