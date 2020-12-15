@@ -5,8 +5,8 @@ account: hollyntorres
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3345543
-bundleId: 3989497
+bundleId: 3990081
 url: https://hollyntorres.shinyapps.io/NFL_Data_Final_Project/
-when: 1607988279.5536
+when: 1607999355.72084
 asMultiple: FALSE
 asStatic: FALSE
