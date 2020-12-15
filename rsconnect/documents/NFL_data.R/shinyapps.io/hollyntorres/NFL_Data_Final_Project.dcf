@@ -1,0 +1,12 @@
+name: NFL_Data_Final_Project
+title: NFL_Data_Final_Project
+username:
+account: hollyntorres
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3345543
+bundleId: 3938501
+url: https://hollyntorres.shinyapps.io/NFL_Data_Final_Project/
+when: 1607008153.80797
+asMultiple: FALSE
+asStatic: FALSE
