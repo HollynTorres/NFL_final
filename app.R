@@ -187,20 +187,17 @@ reg_table
 ######################################################################################
 ######################################################################################
 #
-# 1. Shiny Apps have two basic parts to them
-#
-#   - The user interface (UI) defines how the app should look.
-#
-#     -- For example, the text on the page, the placement of the elements, etc.
-#
-#   - The server defines how the app should behave.
-#
-#     -- This is how live elements are updated - like selecting a state from a list.
-#
-#   - Those two pieces are combined by running shinyApp(ui, server) to create the app.
-#
-#      -- You can also click the green "Run App" button on the top right or
-#         run runApp() in the console
+
+
+# I was running into issues when trying to publish my code, my Rmd file was 
+# what would appear when I published the code. I removed the Rmd file from 
+# here and relocated it and that fixed the first problem. However, another 
+# problem came back up not letting me publish my app and would only run 
+# locally. My app name was NFL.R and by changing the name to just app.R the 
+# app was able to publish and that fixed the error. 
+
+
+
 ui <- navbarPage(
   "NFL Data",
   
@@ -212,9 +209,9 @@ ui <- navbarPage(
     "Main", 
     fluidPage(
       
-# The sidebar panel function was able to create a nice looking side bar box
-# for me to put some introductionary comments in. 
-      
+# The siderbarPanel made a cool little sidebar text box function to my opening
+# tab right when you open my project. I also have a logo picture in the 
+# side bar. 
       
     sidebarPanel(
       h3("Welcome to my final project"),
@@ -225,28 +222,7 @@ ui <- navbarPage(
     )),
     # And here is your "main panel" for the page.
     mainPanel(
-      # - You can also make your UI more complicated with UI elements.
-      #
-      #   -- In general, these are defined by functions that you give arguments to
-      #      (e.g. min and max values).
-      #
-      # - These include:
-      #
-      #   -- selectInput() to choose from multiple options.
-      #
-      #   -- sliderInput() lets you choose a value from a slider of values you define.
-      #
-      #   -- radioButtons() let you choose a button from a number of options
-      #
-      #   -- textInput() lets you enter whatever text you want.
-      #
-      #   -- Lots of other options, like entering a date. Look at the resources for
-      #      other choices!
-      #
-      # - You then assign these inputs to a value and use those values in other places,
-      #   like in plots!
-      #
-      # - All of these functions have their own arguments. For example:
+   
    
       textInput(
         inputId = "entered_text",               # a name for the value you choose here
@@ -260,7 +236,9 @@ ui <- navbarPage(
   
   ),
 
-# Every time I want to start a new tab I use the tabPanel function like below.
+# Every time I want to start a new tab I use the tab Panel function like below.
+# I was having issues creating new tabs because graphs and texts were going on 
+# the wrong pages. This issue was resolved with comma placement. 
 
   tabPanel("About",
            mainPanel(
@@ -333,7 +311,12 @@ ui <- navbarPage(
                team within that region. As you can see there does seem to be more
                trends among the regions, leading me to believe there may be a 
                correlation between the two."),
+     
              
+  # Below is the code for my interaction element. The input ID and label 
+  # are where the text goes for the option title. The choices inserts all of 
+  # the regions there. 
+                     
              selectInput(
                inputId = "SelectRegion", label = "Please Choose a Region",
                choices = unique(NFL_data$region)
@@ -379,12 +362,14 @@ ui <- navbarPage(
            ),
            plotOutput("NFL_correlation"),
            tableOutput("reg"),
-           p("The table output intercept is showing that on average, not considering winning percentage 
-           or without winning any games, the average ticket price in the NFL is about 64 dollars.
-           The win_percent estimate is predicting that on average with every one increase in winning percent
-            the ticket price will increase by about .75 dollars. This correlation can be used 
-            as insight for fans or football lovers when questioning the ticket price of their 
-             favorite NFL team. Although success is not the sole factor, it is a factor.")
+           p("The table output intercept is showing that on average, not 
+           considering winning percentage or without winning any games, the 
+           average ticket price in the NFL is about 64 dollars.The win_percent 
+           estimate is predicting that on average with every one increase in 
+           winning percentthe ticket price will increase by about .75 dollars. 
+           This correlation can be used as insight for fans or football lovers 
+           when questioning the ticket price of their favorite NFL team. 
+             Although success is not the sole factor, it is a factor.")
   )   
 
 )
